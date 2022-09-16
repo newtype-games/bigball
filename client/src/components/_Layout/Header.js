@@ -16,7 +16,8 @@ class Header extends Component{
             case false:
                 return [
                     <NavItem key="3" href="/rule"><i className="file icon"></i> Regras</NavItem>,
-                    <NavItem key="7" href="/auth/google"><i className="google icon"></i> Login with Google</NavItem>
+                    <NavItem key="7" href="/login"><i className="user icon"></i>Login</NavItem>,
+                    <NavItem key="7" href="/register"><i className="file icon"></i>Register</NavItem>
                 ];
             default:
                 const myGameUrl = `/game/${this.props.auth._id}`;

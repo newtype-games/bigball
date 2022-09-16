@@ -1,4 +1,5 @@
 export const getDateTime = (date) => {
+    console.log(date)
     let arr = date.split(" ");
     let dt = arr[0];
     let tm = arr[1];

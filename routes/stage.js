@@ -11,8 +11,13 @@ router.get('/', (req, res) => {
 	if(req.query.id) filter = {_id: req.query.id};
 
 	stageController.get(filter, function(docs){
-
-		res.json(docs);
+		const newDoc = docs.map(doc =>{
+			return {
+				...doc.toObject(),
+				deadline: Date(doc.deadline),
+			}
+		});
+		res.json(newDoc);
 	});
 });
 

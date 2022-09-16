@@ -15,7 +15,6 @@ router.post('/clear', (req, res) => {
 });
 
 router.post('/seed', (req, res) => {
-	console.log(req);
 	worldCupController.seed(function(docs){
 	
 		res.json(docs);

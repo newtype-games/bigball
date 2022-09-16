@@ -24,9 +24,10 @@ const userSchema = new Schema({
     isAdmin: {type:Boolean, default:false},
     urlImg: String,
     registerDate: {type:Date, default: Date.now},
-    name: String,
+    name: {type:String, unique: true},
     email: String,
-    isPaid: {type:Boolean, default:false}
+    isPaid: {type:Boolean, default:false},
+	password: {type: String}
 }, { versionKey: false });
 
 autoIncrement.initialize(mongoose.connection);

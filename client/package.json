@@ -6,6 +6,12 @@
     "/auth/google": {
       "target": "http://localhost:5000"
     },
+    "/login/password":{
+      "target": "http://localhost:5000"
+    },
+    "/register/password":{
+      "target": "http://localhost:5000"
+    },
     "/api/*": {
       "target": "http://localhost:5000"
     }

@@ -3,7 +3,7 @@ import React from 'react';
 const GameRule = () => {
     return (
         <div>
-        <p><i className="file icon"></i>  <u><b>Regras</b></u></p>
+        <p><i className="file icon"></i>  <u><b>Regras 123</b></u></p>
         <br />
 
         <div className="row">

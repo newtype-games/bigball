@@ -56,6 +56,7 @@ module.exports = function(){
 	};
 
 	this.seed = function(callback){
+		console.log(teams);
 		teamsController.update(teams, function(doc){
 
 			playersController.update(players, function(doc){

@@ -10,6 +10,7 @@ import situationReducer from './situationReducer';
 import accountReducer from './accountReducer';
 import topscorerReducer from './topscorerReducer';
 import rankingReducer from './rankingReducer';
+import registerReducer from './registerReducer';
 
 export default combineReducers(
     {
@@ -23,6 +24,7 @@ export default combineReducers(
         situation: situationReducer,
         account: accountReducer,
         topscorer: topscorerReducer,
-        ranking: rankingReducer
+        ranking: rankingReducer,
+        register: registerReducer,
     }
 );

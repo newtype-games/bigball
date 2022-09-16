@@ -12,8 +12,8 @@ import GameRule from './Rules/GameRule';
 import Landing from './_Layout/Landing';
 import Admin from './Admin/Admin';
 import Mygame from './MyGame/Mygame';
-
-
+import Login from './Login/Login';
+import Register from './Register/Register';
 class App extends Component {
 
     constructor(props){
@@ -42,6 +42,8 @@ class App extends Component {
                                         <Route path="/rule" component={GameRule} />
                                         <Route path="/admin" component={Admin} />
                                         <Route path="/game/:id" component={Mygame} />
+                                        <Route path="/login" component={Login} />
+                                        <Route path="/register" component={Register} />
                                         <Route path="/" component={Landing} />
                                     </Switch>
                                 </Col>

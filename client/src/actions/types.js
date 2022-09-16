@@ -27,3 +27,7 @@ export const UPDATE_STAGE = 'update_stage';
 export const UPDATE_MATCH = 'update_match';
 export const FETCH_TOPSCORER = 'fetch_topscorer';
 export const UPDATE_TOPSCORER = 'update_topscorer';
+
+// register
+export const OPEN_REGISTER_PAGE = 'open_register_page';
+export const REGISTER_NEW_USER = 'register_new_user';

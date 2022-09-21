@@ -1,12 +1,22 @@
 var mongoose = require("mongoose");
 var { Schema } = mongoose;
 
+// the whole world cup stages.
+// it contains multiple matches
 var stageSchema = new Schema({
 	_id: String,
 	deadline:  Date,
 	label: String,
-	situation: {type: String, enum: ['Estamos aqui', 'Fase finalizada', 'Fase não iniciada']},
-	status :{type: String, enum: ['completed', 'opened', 'closed']},
+	situation: {type: String, enum: [
+		'Estamos aqui', // 正在舉行 
+		'Fase finalizada',  // 結束
+		'Fase não iniciada' // 尚未開始
+	]},
+	status :{type: String, enum: [
+		'completed', 
+		'opened', 
+		'closed'
+	]},
 	order: Number,
 	multiplier: Number,
 	matches: [{type: Number, ref: 'Match'}]

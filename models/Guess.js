@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var ObjectId = require('mongodb').ObjectID;
 var { Schema } = mongoose;
 
+// user guuess, describe the guess belong to which stage
 var guessSchema = new Schema({
 	_id: Schema.Types.ObjectId,
 	user: { type: Schema.Types.ObjectId, ref: 'user'},

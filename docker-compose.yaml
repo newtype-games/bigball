@@ -2,7 +2,14 @@
 version: '3.1'
 
 services:
-
+  big_ball:
+    image: rickychang0118/big-ball:0.0.2
+    environment:
+      MONGO_URI: mongodb://big_ball_admin:big_ball_admin@mongo:27017/bigball
+      COOKIE_KEY: bigball_dev
+    ports:
+      - 3000:3000
+      - 5000:5000
   mongo:
     image: mongo
     restart: always

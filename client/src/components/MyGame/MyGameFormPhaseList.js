@@ -182,8 +182,20 @@ class MyGameFormPhaseList extends Component {
             children.push (
                 <tr key={i}>
                     <td width="10%" style={{textAlign:"center"}}>
-                        {isEdit(this.props.id, this.props.auth._id) && stage.status == "opened" && <input type="radio" onClick={this.selectedDoubleMatch.bind(this, stage._id)} name="rbDouble" value={match.relatedMatch} defaultChecked={checked(stage.doubleMatch, match.relatedMatch)} />}
-                        {stage.status != "opened" && checked(stage.doubleMatch, match.relatedMatch) && <i className="icon arrow alternate circle right"></i>}
+                        {
+                            isEdit(this.props.id, this.props.auth._id) && 
+                            stage.status == "opened" && 
+                            <input type="radio" 
+                                onClick={this.selectedDoubleMatch.bind(this, stage._id)} 
+                                name="rbDouble" 
+                                value={match.relatedMatch} 
+                                defaultChecked={checked(stage.doubleMatch, match.relatedMatch)} 
+                            />
+                        }
+                        {
+                            stage.status != "opened" && checked(stage.doubleMatch, match.relatedMatch) && 
+                            <i className="icon arrow alternate circle right"></i>
+                        }
                     </td>
                     <td onClick={this.selectMatch.bind(this, `${ind};${i}`)}>
                         <Match match={match} teams={this.props.teams} />

@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var ObjectId = require('mongodb').ObjectID;
 var { Schema } = mongoose;
 
+// statistic
 var globalGuessSchema = new Schema({
 	mainGuess: {type: Schema.Types.ObjectId, ref: 'Guess'},
 	relatedStage: {type: String, ref: 'Stage'},

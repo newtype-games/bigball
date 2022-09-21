@@ -5,15 +5,22 @@ var { Schema } = mongoose;
 var teamSchema = new Schema({
 	_id: String,
 	name:  String,
-	gp: Number,
-	gc: Number
+	gp: Number, // 得分
+	gc: Number  // 失分
 }, { versionKey: false });
 
 teamSchema.methods.calculate =  function() {
 	var instance = this;
 	return new Promise(function(resolve, reject){
 
-		Match.find({$or:[{homeTeam: instance._id}, {visitorTeam: instance._id}], homeScore: {$exists: true}, visitorScore: {$exists: true}}).then(function(matches){
+		Match.find({
+			$or:[
+				{homeTeam: instance._id}, 
+				{visitorTeam: instance._id}
+			], 
+			homeScore: {$exists: true}, 
+			visitorScore: {$exists: true}}
+		).then(function(matches){
 			var golsPro = 0;
 			var golsContra = 0;
 			if (matches.length > 0) {

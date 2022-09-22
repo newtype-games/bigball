@@ -6,7 +6,15 @@ var matchGuessSchema = new Schema({
 	relatedMatch: {type: Number, ref: 'Match'},
 	points: Number,
 	stageGuess: {type: Schema.Types.ObjectId, ref: 'StageGuess'},
-	guess: {homeScore: Number, visitorScore: Number, winner:{type: String, ref: 'Team'}}
+	guess: {
+		homeScore: Number, 
+		visitorScore: Number, 
+		winner:{type: String, ref: 'Team'}
+	},
+	winnerGuess:{
+		wagerOnHome: Number,
+		wagerOnVisitor: Number
+	},
 }, {versionKey: false });
 
 matchGuessSchema.static('asyncUpsert', function (id, matchGuess, callback) {
@@ -25,11 +33,16 @@ matchGuessSchema.static('asyncUpsert', function (id, matchGuess, callback) {
 });
 
 if (!matchGuessSchema.options.toObject) matchGuessSchema.options.toObject = {};
+
 matchGuessSchema.options.toObject.transform = function (doc, ret, options) {
 
 	ret.result = {};
 	if(!ret.guess) {
 		ret.guess = {};
+	}
+
+	if(!ret.winnerGuess) {
+		ret.winnerGuess = {};
 	}
 
 	if(ret.relatedMatch._id){

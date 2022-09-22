@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import MyGameFormFactorsItem from './MyGameFormFactorsItem';
-import MyGameFormPhaseList from './MyGameFormPhaseList';
+import MyGameFormPhaseListWinnerOnly from './MyGameFormPhaseListWinnerOnly';
 import {connect} from 'react-redux';
 import * as dates from '../../utils/date';
 import _ from 'lodash';
@@ -109,7 +109,7 @@ class MyGameForm extends Component {
                             </div>
                         </div>
                         <hr />
-                        <MyGameFormPhaseList id={this.props.id} />
+                        <MyGameFormPhaseListWinnerOnly id={this.props.id} />
                     </form>
                 </div>
             );

@@ -1,0 +1,3 @@
+const SECRET_KEY_INVALID = -1;
+const CONSUMED_H_COINS_INVALID = -2;
+const TEAM_INVALID = -3;

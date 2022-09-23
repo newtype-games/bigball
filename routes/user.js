@@ -47,5 +47,36 @@ router.put('/:id', (req, res) => {
 	});
 });
 
+router.post('/:h365ID/onComsumedHCoins', async (req, res)=> {
+	const h365ID = req.params.h365ID;
+	const payload = req.body;
+
+	if(req.headers['key'] != process.env.SECRET_KEY){
+		res.json({
+			code: SECRET_KEY_INVALID,
+			reason: "",
+		});	
+		return;
+	}
+
+	if(!payload.consumedHCoins || payload.consumedHCoins < 0){
+		res.json({
+			code: CONSUMED_H_COINS_INVALID,
+			reason: "consumedHCoins invalid",
+		});
+		return;
+	}
+
+	const result = await userController.onConsumedHCoins(h365ID, {
+		consumedHCoins: payload.consumedHCoins,
+	})
+	
+	res.json({
+		code: 0,
+		balance: result.balance,
+		totalConsumedHCoin: result.totalConsumedHCoin,
+		remainHCoin: result.remainHCoin,
+	})
+});
 
 module.exports = router;

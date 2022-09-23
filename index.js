@@ -13,6 +13,7 @@ require('./models/User');
 require('./services/passport');
 
 mongoose.connect(keys.mongoURI);
+mongoose.set('useFindAndModify', true);
 
 const app = express();
 

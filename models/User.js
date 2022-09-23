@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const autoIncrement = require("mongoose-auto-increment");
-const Guess = require('./Guess');
 const Ranking = require('./Ranking');
 const { Schema } = mongoose;
 
@@ -21,13 +20,17 @@ const _matchGuessesJson = require('../misc/MatchGuess.json');
 
 const userSchema = new Schema({
     googleID: String,
+	h365ID: String,
     isAdmin: {type:Boolean, default:false},
     urlImg: String,
     registerDate: {type:Date, default: Date.now},
     name: {type:String, unique: true},
     email: String,
     isPaid: {type:Boolean, default:false},
-	password: {type: String}
+	password: {type: String},
+	balance: { type: Number, default: 0 }, 
+	remainHCoin: { type: Number, default: 0},
+	totalConsumedHCoin: { type: Number, default: 0},
 }, { versionKey: false });
 
 autoIncrement.initialize(mongoose.connection);
@@ -66,7 +69,7 @@ userSchema.post('save', function () {
 		guessJson.stageGuesses.push(stageGuess._id);
 	});
 
-        var insereGuess = new Promise(function(resolve, reject){guessController.save(guessJson, function(doc){resolve(doc[0])})});
+	var insereGuess = new Promise(function(resolve, reject){guessController.save(guessJson, function(doc){resolve(doc[0])})});
 
 	insereGuess.catch(err => console.log(err));
 
@@ -144,6 +147,38 @@ userSchema.post('save', function () {
 		}).catch(err => console.log(err));
 	});
     }
+});
+
+userSchema.static("onConsumedHCoins", async function(h365ID, payload){
+	var model = this;
+
+	const ratio = parseInt(process.env.H_COIN_RATIO);
+	
+	const user = await model.findOne({
+		h365ID: h365ID,
+	});
+
+	const remainHCoin = user.remainHCoin + payload.consumedHCoins;
+	const updateObj = {
+		$inc: {
+			balance: Math.floor(remainHCoin / ratio),
+			totalConsumedHCoin: payload.consumedHCoins,
+		},
+		$set:{
+			remainHCoin: remainHCoin % ratio
+		}
+	};
+
+	const updatedUser = await model.findByIdAndUpdate(
+		user.id, 
+		updateObj, 
+		{ 
+			new: true,
+			upsert: true,
+		}
+	);
+	
+	return updatedUser;
 });
 
 module.exports = mongoose.model('user', userSchema);

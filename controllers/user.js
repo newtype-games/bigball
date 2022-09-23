@@ -32,4 +32,27 @@ module.exports = function(){
 			callback(true);
 		});
 	};
+
+	this.onConsumedHCoins = async function(h365ID, payload){
+		// TODO: h365 token?
+		
+		let user = await User.findOne({
+			h365ID: h365ID,
+		});
+
+		if(!user){
+			user = await new User({
+				googleID:"",
+				h365ID: h365ID,
+				name: h365ID,
+				email: "",
+				urlImg: '',
+				password: '',
+			}).save();
+		}
+
+		
+		const result = await User.onConsumedHCoins(h365ID, payload);
+		return result;
+	}
 };

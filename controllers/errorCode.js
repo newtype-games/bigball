@@ -3,4 +3,5 @@ module.exports = {
     USER_NOT_FOUND: -102,
     BET_FAILED: -103,
     MATCH_ID_INVALID: -104,
+    STAGE_ID_INVALID: -105
 }

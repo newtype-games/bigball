@@ -5,7 +5,7 @@ var router = express.Router();
 var matchGuessController = new MatchGuessController();
 var matchGuessControllerv2 = new MatchGuessV2Controller();
 
-var code =  require('./responseCode');
+var Code =  require('./responseCode');
 
 router.get('/', (req, res) => {
 
@@ -89,14 +89,14 @@ router.post('/betOnTeam', async (req, res) => {
 	try{
 		if(!param.h365ID){
 			res.json({
-				code: code.INVALID_H365ID
+				code: Code.INVALID_H365ID
 			});	
 			return;
 		}
 
 		if(param.id == ''){
 			res.json({
-				code: code.INVALID_MATCH_GUESS_ID
+				code: Code.INVALID_MATCH_GUESS_ID
 			});	
 			return;
 		}
@@ -105,14 +105,14 @@ router.post('/betOnTeam', async (req, res) => {
 			param.team != 'home' && 
 			param.team  != 'visitor'){
 			res.json({
-				code: code.TEAM_INVALID
+				code: Code.TEAM_INVALID
 			});
 			return;
 		}
 
 		if(!param.count || param.count < 0){
 			res.json({
-				code: code.INVALID_BET_COUNT,
+				code: Code.INVALID_BET_COUNT,
 			});
 			return;
 		}
@@ -125,7 +125,6 @@ router.post('/betOnTeam', async (req, res) => {
 		});
 		return;
 	}catch(e){
-
 		if(typeof(e) == 'number'){
 			res.json({
 				code: e,
@@ -135,7 +134,7 @@ router.post('/betOnTeam', async (req, res) => {
 
 		console.error(e);
 		res.json({
-			code: code.UNKNOWN_ERROR,
+			code: Code.UNKNOWN_ERROR,
 			message: e
 		});
 	}

@@ -12,6 +12,7 @@ var stageGuessRoutes = require('./stageGuess');
 var globalGuessRoutes = require('./globalGuess');
 var rankingRoutes = require('./ranking');
 var requireLogin = require('../middlewares/requireLogin');
+var balanceStatistic = require('./balanceStatistic');
 
 module.exports = function(app) {
 
@@ -38,6 +39,8 @@ module.exports = function(app) {
 	app.use('/api/globalGuess', globalGuessRoutes);
 
 	app.use('/api/ranking', rankingRoutes);
+
+	app.use('/api/balanceStatistic', balanceStatistic);
 }
 
 

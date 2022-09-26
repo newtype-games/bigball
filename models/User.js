@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const autoIncrement = require("mongoose-auto-increment");
 const Ranking = require('./Ranking');
 const { Schema } = mongoose;
+const Code = require('./errorCode');
 
 // get rid of it.
 const GuessController = require('../controllers/guess');
@@ -196,44 +197,54 @@ userSchema.static("onConsumedHCoins", async function(h365ID, payload){
 userSchema.static("deductBalance", async function(h365ID, payload){
 	var model = this;
 
-	const updatedUser = await model.findOneAndUpdate(
-		{
-			h365ID: h365ID,
-			balance: { $gte: payload.count }
-		}, 
-		{
-			$inc: {
-				balance: -payload.count
+	try {
+		const updatedUser = await model.findOneAndUpdate(
+			{
+				h365ID: h365ID,
+				balance: { $gte: payload.count }
+			}, 
+			{
+				$inc: {
+					balance: -payload.count
+				}
+			}, 
+			{ 
+				new: true,
+				upsert: true,
 			}
-		}, 
-		{ 
-			new: true,
-			upsert: true,
-		}
-	);
-
-	return updatedUser;
+		);
+		
+		return updatedUser;
+	}catch(e){
+		throw Code.FAILED_TO_DEDUCT_BALANCE
+	}
+	
 });
 
 userSchema.static("increaseBalance", async function(h365ID,payload){
 	var model = this;
-	
-	const updatedUser = await model.findOneAndUpdate(
-		{
-			h365ID: h365ID,
-		},
-		{
-			$inc: {
-				balance: payload.count
+	try {
+		const updatedUser = await model.findOneAndUpdate(
+			{
+				h365ID: h365ID,
+			},
+			{
+				$inc: {
+					balance: payload.count
+				}
+			}, 
+			{ 
+				new: true,
+				upsert: true,
 			}
-		}, 
-		{ 
-			new: true,
-			upsert: true,
-		}
-	);
+		);
+
+		return updatedUser;
+	}catch(e){
+		console.error(e);
+		throw Code.FALIED_TO_INCREASE_BALANCE
+	}
 	
-	return updatedUser;
 });
 
 module.exports = mongoose.model('user', userSchema);

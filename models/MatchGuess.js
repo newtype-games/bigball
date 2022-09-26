@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 var ObjectId = require('mongodb').ObjectID;
 var { Schema } = mongoose;
+const Code = require('./errorCode');
 
 var matchGuessSchema = new Schema({
 	relatedMatch: {type: Number, ref: 'Match'},
@@ -24,50 +25,52 @@ var matchGuessSchema = new Schema({
 
 matchGuessSchema.static('betOnHome', async function(id, matchGuess, callback){
 	var model = this;
-	if(!id){
-		reject("id not valid");
-		return;
-	}
+	try {
 
-	const updatedGeuss = await model.findByIdAndUpdate(
-		id, 
-		{
-			$inc: {
-				'winnerGuess.wagerOnHome': matchGuess.count,
+	
+		const updatedGeuss = await model.findByIdAndUpdate(
+			id, 
+			{
+				$inc: {
+					'winnerGuess.wagerOnHome': matchGuess.count,
+				}
+			},
+			{ 
+				new: true,
+				upsert: true,
 			}
-		},
-		{ 
-			new: true,
-			upsert: true,
-		}
-	);
-
-	return updatedGeuss;
+		);
+	
+		return updatedGeuss;
+	}catch(e){
+		console.error(e);
+		throw Code.FAILED_TO_SETTLT
+	}
+	
 });
 
 matchGuessSchema.static('betOnVisitor', async function(id, matchGuess, callback){
 	var model = this;
-	if(!id){
-		reject("id not valid");
-		return;
+	try{
+		const updatedGeuss = await model.findByIdAndUpdate(
+			id, 
+			{
+				$inc: {
+					'winnerGuess.wagerOnVisitor': matchGuess.count,
+				}
+			},
+			{ 
+				new: true,
+				upsert: true,
+			}
+		);
+	
+		return updatedGeuss;
+	}catch(e){
+		console.error(e);
+		throw Code.FAILED_TO_SETTLT;
 	}
-
-	const updateObj = {
-		$inc: {
-			'winnerGuess.wagerOnVisitor': matchGuess.count,
-		}
-	}
-
-	const updatedGeuss = await model.findByIdAndUpdate(
-		id, 
-		updateObj,
-		{ 
-			new: true,
-			upsert: true,
-		}
-	);
-
-	return updatedGeuss;
+	
 });
 
 matchGuessSchema.static('asyncUpsert', function (id, matchGuess, callback) {

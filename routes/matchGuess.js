@@ -1,8 +1,11 @@
 var express = require('express');
 var MatchGuessController = require('../controllers/matchGuess');
-
+var MatchGuessV2Controller = require('../controllers/matchGuess.v2')
 var router = express.Router();
 var matchGuessController = new MatchGuessController();
+var matchGuessControllerv2 = new MatchGuessV2Controller();
+
+var code =  require('./responseCode');
 
 router.get('/', (req, res) => {
 
@@ -75,9 +78,67 @@ router.post('/', (req, res) => {
 	var matchGuess = req.body;
 		
 	matchGuessController.save(matchGuess, function(docs){
-	
 		res.json(docs);
 	});
+});
+
+router.post('/betOnTeam', async (req, res) => {
+
+	const param = req.body;
+
+	try{
+		if(!param.h365ID){
+			res.json({
+				code: code.INVALID_H365ID
+			});	
+			return;
+		}
+
+		if(param.id == ''){
+			res.json({
+				code: code.INVALID_MATCH_GUESS_ID
+			});	
+			return;
+		}
+
+		if(param.team == '' || 
+			param.team != 'home' && 
+			param.team  != 'visitor'){
+			res.json({
+				code: code.TEAM_INVALID
+			});
+			return;
+		}
+
+		if(!param.count || param.count < 0){
+			res.json({
+				code: code.INVALID_BET_COUNT,
+			});
+			return;
+		}
+		
+		const result = await matchGuessControllerv2.betOnTeam(param);
+
+		res.json({
+			code: 0,
+			...result.winnerGuess,
+		});
+		return;
+	}catch(e){
+
+		if(typeof(e) == 'number'){
+			res.json({
+				code: e,
+			});
+			return;
+		}
+
+		console.error(e);
+		res.json({
+			code: code.UNKNOWN_ERROR,
+			message: e
+		});
+	}
 });
 
 module.exports = router;

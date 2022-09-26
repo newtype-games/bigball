@@ -1,3 +1,4 @@
+var MatchGuess = require('../models/MatchGuess');
 var User = require('../models/User');
 
 module.exports = function(){

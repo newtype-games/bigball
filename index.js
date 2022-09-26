@@ -45,5 +45,7 @@ if(process.env.NODE_ENV === 'production'){
     });
 }
 
+// TODO: pubsub.
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);

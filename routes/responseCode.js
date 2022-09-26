@@ -1,0 +1,9 @@
+module.exports = {
+    SECRET_KEY_INVALID: -1,
+    CONSUMED_H_COINS_INVALID: -2,
+    TEAM_INVALID: -3,
+    INVALID_MATCH_GUESS_ID: -4,
+    INVALID_BET_COUNT: -5,
+    UNKNOWN_ERROR: -6,
+    INVALID_H365ID: -7,    
+}

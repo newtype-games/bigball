@@ -17,6 +17,59 @@ var matchGuessSchema = new Schema({
 	},
 }, {versionKey: false });
 
+// TODO: verify the new match guess
+// matchGuess: {
+// 	count: number
+// }
+
+matchGuessSchema.static('betOnHome', async function(id, matchGuess, callback){
+	var model = this;
+	if(!id){
+		reject("id not valid");
+		return;
+	}
+
+	const updatedGeuss = await model.findByIdAndUpdate(
+		id, 
+		{
+			$inc: {
+				'winnerGuess.wagerOnHome': matchGuess.count,
+			}
+		},
+		{ 
+			new: true,
+			upsert: true,
+		}
+	);
+
+	return updatedGeuss;
+});
+
+matchGuessSchema.static('betOnVisitor', async function(id, matchGuess, callback){
+	var model = this;
+	if(!id){
+		reject("id not valid");
+		return;
+	}
+
+	const updateObj = {
+		$inc: {
+			'winnerGuess.wagerOnVisitor': matchGuess.count,
+		}
+	}
+
+	const updatedGeuss = await model.findByIdAndUpdate(
+		id, 
+		updateObj,
+		{ 
+			new: true,
+			upsert: true,
+		}
+	);
+
+	return updatedGeuss;
+});
+
 matchGuessSchema.static('asyncUpsert', function (id, matchGuess, callback) {
 
 	var model = this;

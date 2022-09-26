@@ -1,7 +1,8 @@
 var MatchGuess = require('../models/MatchGuess');
 var User = require('../models/User');
 var Code = require('./errorCode');
-var ModeCode = require('../models/errorCode');
+var ModelCode = require('../models/errorCode');
+var BalanceStatistic = require('../models/balanceStatistic');
 
 module.exports = function(){
     this.betOnTeam = async function(param){
@@ -25,18 +26,25 @@ module.exports = function(){
 		try{
 			await User.deductBalance(param.h365ID,param);
 
+			let betResult;
+
 			if(param.team == 'home'){
-				return await MatchGuess.betOnHome(param.id, {
+				betResult = await MatchGuess.betOnHome(param.id, {
 					count: param.count
 				});
 			}else if(param.team == 'visitor'){
-				return await MatchGuess.betOnVisitor(param.id, {
+				betResult = await MatchGuess.betOnVisitor(param.id, {
 					count: param.count
 				});
 			}
 
+			await BalanceStatistic.onUserBet('0', {
+				coinCount: param.count,
+			});
+
+			return betResult;
 		}catch(e){
-			if(e == ModeCode.FAILED_TO_SETTLT){
+			if(e == ModelCode.FAILED_TO_SETTLT){
 				await User.increaseBalance(param.h365ID,param);
 			}
 			

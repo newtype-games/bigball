@@ -63,7 +63,8 @@ matchGuessSchema.static('betOnVisitor', async function(id, matchGuess, callback)
 				new: true,
 				upsert: true,
 			}
-		);
+		)
+		.populate('relatedMatch');
 	
 		return updatedGeuss;
 	}catch(e){

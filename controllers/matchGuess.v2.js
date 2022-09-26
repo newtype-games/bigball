@@ -3,6 +3,7 @@ var User = require('../models/User');
 var Code = require('./errorCode');
 var ModelCode = require('../models/errorCode');
 var BalanceStatistic = require('../models/balanceStatistic');
+var Stage = require('../models/Stage');
 
 module.exports = function(){
     this.betOnTeam = async function(param){
@@ -38,7 +39,15 @@ module.exports = function(){
 				});
 			}
 
-			await BalanceStatistic.onUserBet('0', {
+			const stages = await Stage.find({
+				matches: {
+					$elemMatch: {
+						$eq: betResult.toObject().relatedMatch
+					}
+				}
+			});
+
+			await BalanceStatistic.onUserBet(stages[0]._id, {
 				coinCount: param.count,
 			});
 

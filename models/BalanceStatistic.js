@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
 const ObjectID = require('mongodb').ObjectID;
 
+// TODO: consumed balance?
 const BalanceStatisticSchema = new mongoose.Schema({
-    id: { type: String},
-    relatedStage: {type: String, ref: 'Stage'},
+    _id: { type: String}, // stage.
     accumulateCoins: { type: Number }
 }, { versionKey: false });
-
 
 BalanceStatisticSchema.static("onUserBet", async function(id, payload){
 
@@ -14,12 +13,12 @@ BalanceStatisticSchema.static("onUserBet", async function(id, payload){
     const updateObj = {
         $inc: {
             accumulateCoins: payload.coinCount,
-        }
+        },
     }
 
     const p = new Promise(function(resolve, reject){
         model.findOneAndUpdate(
-            {id: id},
+            { _id: id},
             updateObj,
             {
                 new: true,

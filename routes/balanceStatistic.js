@@ -3,34 +3,39 @@ const router = express.Router();
 const BalanceStatisticController = require('../controllers/balanceStatistic');
 const Code =  require('./responseCode');
 
-const balanceStatisticController = new BalanceStatisticController();
 
-router.get('/', async (req, res) => {
-	var filter = {id: req.query.id};
-    try {
-        const result = await balanceStatisticController.get(filter)
 
-        console.log(result);
-
-        res.json({
-			code: 0,
-			...result.toObject(),
-		});
-		return;
-    }catch(e){
-        if(typeof(e) == 'number'){
+function generateRouter(redisClient){
+	const balanceStatisticController = new BalanceStatisticController(redisClient);
+	router.get('/', async (req, res) => {
+		
+		try {
+			const filter = {id: req.query.id};
+			result = await balanceStatisticController.get(filter)
+			
 			res.json({
-				code: e,
+				code: 0,
+				...result.toObject(),
 			});
 			return;
+		}catch(e){
+			if(typeof(e) == 'number'){
+				res.json({
+					code: e,
+				});
+				return;
+			}
+	
+			console.error(e);
+			res.json({
+				code: Code.UNKNOWN_ERROR,
+				message: e
+			});
 		}
+	});
 
-		console.error(e);
-		res.json({
-			code: Code.UNKNOWN_ERROR,
-			message: e
-		});
-    }
-});
+	return router;
+}
 
-module.exports = router;
+
+module.exports = generateRouter;

@@ -1,7 +1,7 @@
 var MatchGuess = require('../models/MatchGuess');
 var User = require('../models/User');
 
-module.exports = function(){
+module.exports = function(redisClient){
 
 	this.getById = function(id, callback){
 
@@ -35,8 +35,6 @@ module.exports = function(){
 	};
 
 	this.onConsumedHCoins = async function(h365ID, payload){
-		// TODO: h365 token?
-		
 		let user = await User.findOne({
 			h365ID: h365ID,
 		});

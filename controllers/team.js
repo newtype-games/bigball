@@ -1,5 +1,5 @@
 var Team = require('../models/Team');
-const ObjectId = require('mongodb').ObjectID;
+const ObjectId = require('mongodb').ObjectId;
 
 module.exports = function(){
 

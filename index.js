@@ -31,7 +31,6 @@ redisClient.on('connect', function (err) {
 
 redisClient.connect();
 
-
 require('./models/User');
 require('./services/passport');
 
@@ -52,7 +51,7 @@ app.use(session({
     cookie: {
         secure: false, // if true only transmit cookie over https
         httpOnly: false, // if true prevent client side JS from reading the cookie 
-        maxAge: 1000 * 60 * 10 // session max age in miliseconds
+        maxAge: 1000 * 60 * 60 * 8 // session max age in miliseconds
     }
 }));
 
@@ -61,7 +60,7 @@ app.use(passport.session());
 
 
 require('./routes/authRoutes')(app);
-require('./routes/main')(app);
+require('./routes/main')(app, redisClient);
 
 if(process.env.NODE_ENV === 'production'){
     // Express will serve up production assets

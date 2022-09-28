@@ -5,7 +5,7 @@ var ModelCode = require('../models/errorCode');
 var BalanceStatistic = require('../models/balanceStatistic');
 var Stage = require('../models/Stage');
 
-module.exports = function(){
+module.exports = function(redisClient){
     this.betOnTeam = async function(param){
 
 		let user = await User.findOne({
@@ -47,9 +47,11 @@ module.exports = function(){
 				}
 			});
 
-			await BalanceStatistic.onUserBet(stages[0]._id, {
+			const updatedBalanceStatistic = await BalanceStatistic.onUserBet(stages[0]._id, {
 				coinCount: param.count,
 			});
+			
+			redisClient.set(`balanceStatistic:${updatedBalanceStatistic.id}`, JSON.stringify(updatedBalanceStatistic));
 
 			return betResult;
 		}catch(e){

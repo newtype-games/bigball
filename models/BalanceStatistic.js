@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const ObjectID = require('mongodb').ObjectID;
 
 // TODO: consumed balance?
 const BalanceStatisticSchema = new mongoose.Schema({

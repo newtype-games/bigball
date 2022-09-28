@@ -1,4 +1,4 @@
-const ObjectId = require('mongodb').ObjectID;
+const ObjectId = require('mongodb').ObjectId;
 var GlobalGuess = require('../models/GlobalGuess');
 var emptyGlobalGuesses = require('../misc/GlobalGuess.json');
 

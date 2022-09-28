@@ -14,7 +14,7 @@ var rankingRoutes = require('./ranking');
 var requireLogin = require('../middlewares/requireLogin');
 var balanceStatistic = require('./balanceStatistic');
 
-module.exports = function(app) {
+module.exports = function(app, redisClient) {
 
 	app.use('/api/team', teamRoutes);
 
@@ -30,9 +30,9 @@ module.exports = function(app) {
 
 	app.use('/api/stage', stageRoutes);
 
-	app.use('/api/user', userRoutes);
+	app.use('/api/user', userRoutes(redisClient));
 
-	app.use('/api/matchGuess', matchGuessRoutes);
+	app.use('/api/matchGuess', matchGuessRoutes(redisClient));
 
 	app.use('/api/stageGuess', stageGuessRoutes);
 
@@ -40,7 +40,7 @@ module.exports = function(app) {
 
 	app.use('/api/ranking', rankingRoutes);
 
-	app.use('/api/balanceStatistic', balanceStatistic);
+	app.use('/api/balanceStatistic', balanceStatistic(redisClient));
 }
 
 

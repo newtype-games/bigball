@@ -1,33 +1,64 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cookieSession = require("cookie-session");
 const passport = require("passport");
 const BodyParser = require("body-parser");
+const { createClient } = require('redis');
+const session = require("express-session");
+const connectRedis = require("connect-redis");
+const RedisStore = connectRedis(session);
 
 require('dotenv').config()
 
 const keys = require("./config/keys");
 
 
+// init redis.
+const redisClient = createClient({
+    socket: {
+        host: process.env.REDIS_ADDRESS,
+        port: process.env.REDIS_PORT,
+    },
+    password: process.env.REDIS_PASSWORD,
+    legacyMode: true
+});
+
+redisClient.on('error', function (err) {
+    console.log('Could not establish a connection with redis. ' + err);
+});
+redisClient.on('connect', function (err) {
+    console.log('Connected to redis successfully');
+});
+
+redisClient.connect();
+
+
 require('./models/User');
 require('./services/passport');
 
-mongoose.connect(keys.mongoURI);
-mongoose.set('useFindAndModify', true);
+mongoose.connect(keys.mongoURI,{useNewUrlParser: true, useUnifiedTopology: true});
 
 const app = express();
 
 app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({ extended: false }));
 
-app.use(
-    cookieSession({
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-        keys: [keys.cookieKey]
-    })
-);
+// check the reids content.
+
+app.use(session({
+    store: new RedisStore({ client: redisClient }),
+    secret: 'secret$%^134',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false, // if true only transmit cookie over https
+        httpOnly: false, // if true prevent client side JS from reading the cookie 
+        maxAge: 1000 * 60 * 10 // session max age in miliseconds
+    }
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 require('./routes/authRoutes')(app);
 require('./routes/main')(app);
@@ -48,4 +79,6 @@ if(process.env.NODE_ENV === 'production'){
 // TODO: pubsub.
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT);
+app.listen(PORT, () => {
+    console.log(`Server started at port ${PORT}`);
+});

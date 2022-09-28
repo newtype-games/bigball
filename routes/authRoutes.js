@@ -32,7 +32,7 @@ module.exports = app => {
             });
     
             if(!user){
-                console.log(`user[${uuid}] not found, create new one`);
+                console.info(`user[${uuid}] not found, create new one`);
                 user = await new User({
                     googleID:"",
                     h365ID: uuid,
@@ -42,18 +42,17 @@ module.exports = app => {
                     password: '',
                 }).save();
             }
+            
             const p = new Promise((resolve, reject)=> {
                 req.logIn(user, (err)=> {
                     if (err) { 
-                        console.log(err) 
+                        console.error(err) 
                         reject(err);
                     }
                     resolve();
                 });
             });
-
             await p;
-
             if(process.env.THIRD_PARTY_LOGIN_REDIRECT_URL){
                 res.redirect(process.env.THIRD_PARTY_LOGIN_REDIRECT_URL);
                 return;

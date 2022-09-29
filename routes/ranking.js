@@ -5,7 +5,9 @@ var router = express.Router();
 var rankingController = new RankingController();
 
 router.get('/', (req, res) => {
-
+	/* 
+		#swagger.tags = ['Ranking']
+	*/
 	var id = req.query.id;
 	var user = req.query.user;
 

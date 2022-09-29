@@ -5,7 +5,9 @@ var router = express.Router();
 var globalGuessController = new GlobalGuessController();
 
 router.get('/', (req, res) => {
-
+	/* 
+		#swagger.tags = ['GlobalGuess']
+	*/
 	var filter = {};
 
 	globalGuessController.get(filter, function(docs){
@@ -14,21 +16,10 @@ router.get('/', (req, res) => {
 	});
 });
 
-
-router.delete('/', (req, res) => {
-	
-	var filter = {};
-
-	globalGuessController.delete(filter, function(message){
-
-		res.json(message);
-
-	});
-
-});
-
 router.put('/', (req, res) => {
-
+	/* 
+		#swagger.tags = ['GlobalGuess']
+	*/
 	var globalGuess = req.body;
 	
 	globalGuessController.save(globalGuess, function(docs){
@@ -38,7 +29,9 @@ router.put('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-
+	/* 
+		#swagger.tags = ['GlobalGuess']
+	*/
 	var globalGuess = req.body;
 		
 	globalGuessController.save(globalGuess, function(docs){

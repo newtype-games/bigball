@@ -5,6 +5,9 @@ var router = express.Router();
 var accountController = new AccountController();
 
 router.get('/', (req, res) => {
+	/* 
+		#swagger.tags = ['Account']
+	*/
 	accountController.getAll(function(docs){
 		
 		res.json(docs);
@@ -12,7 +15,9 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:accId', (req, res) => {
-
+	/* 
+		#swagger.tags = ['Account']
+	*/
 	var accId = req.params.accId;
 
 	accountController.getById(accId, function(docs){
@@ -23,7 +28,9 @@ router.get('/:accId', (req, res) => {
 
 
 router.delete('/:accId', (req, res) => {
-	
+	/* 
+		#swagger.tags = ['Account']
+	*/
 	var accId = req.params.accId;
 
 	accountController.delete(accId, function(doc){
@@ -35,7 +42,9 @@ router.delete('/:accId', (req, res) => {
 });
 
 router.put('/:accId', (req, res) => {
-
+	/* 
+		#swagger.tags = ['Account']
+	*/
 	var accId = req.params.accId;
 	var account = req.body;
 
@@ -47,7 +56,9 @@ router.put('/:accId', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-
+	/* 
+		#swagger.tags = ['Account']
+	*/
 	var account = req.body;
 	var accId = account._id;
 

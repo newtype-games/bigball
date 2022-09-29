@@ -6,6 +6,8 @@ const { createClient } = require('redis');
 const session = require("express-session");
 const connectRedis = require("connect-redis");
 const RedisStore = connectRedis(session);
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger_output.json')
 
 require('dotenv').config()
 
@@ -57,7 +59,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 require('./routes/authRoutes')(app);
 require('./routes/main')(app, redisClient);

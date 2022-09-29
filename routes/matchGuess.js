@@ -3,94 +3,20 @@ var MatchGuessController = require('../controllers/matchGuess');
 var MatchGuessV2Controller = require('../controllers/matchGuess.v2')
 var router = express.Router();
 
-
 var Code =  require('./responseCode');
 
 function generateRouter(redisClient){
-	var matchGuessController = new MatchGuessController();
 	var matchGuessControllerv2 = new MatchGuessV2Controller(redisClient);
 
-	router.get('/', (req, res) => {
-
-		var filter = {};
-	
-		if (req.query.id) filter = {_id: req.query.id};
-	
-		matchGuessController.get(filter, function(docs){
-			
-			res.json(docs);
-		});
-	});
-	
-	router.get(/([a-f0-9]{24})/, (req, res) => {
-	
-		var filter = {_id: req.params[0]};
-	
-		matchGuessController.get(filter, function(docs){
-			
-			res.json(docs[0]);
-		});
-	});
-	
-	
-	router.delete('/', (req, res) => {
-		
-		var filter = {};
-	
-		matchGuessController.delete(filter, function(message){
-	
-			res.json(message);
-	
-		});
-	
-	});
-	
-	router.put('/', (req, res) => {
-	
-		var matchGuess = req.body;
-	
-		if(!matchGuess._id) {res.json('ID nao encontrado');}
-		else {
-			
-			matchGuessController.save(matchGuess, function(docs){
-		
-				res.json(docs);
-			});
-		}
-	});
-	
-	router.put(/([a-f0-9]{24})/, (req, res) => {
-	
-		var matchGuess = req.body;
-	
-		if (!matchGuess._id) {res.json('ID nao encontrado.');}
-	
-		else if (matchGuess._id != req.params[0]) {res.json('ID do form diferente do ID da URL.');}
-	
-		else {
-			
-			matchGuessController.save(matchGuess, function(docs){
-		
-				res.json(docs[0]);
-			});
-		}
-	});
-	
-	router.post('/', (req, res) => {
-	
-		var matchGuess = req.body;
-			
-		matchGuessController.save(matchGuess, function(docs){
-			res.json(docs);
-		});
-	});
-	
 	router.post('/betOnTeam', async (req, res) => {
-	
+		/* 
+			#swagger.tags = ['MatchGuess']
+			#swagger.description = '對隊伍下注'
+		*/
 		const param = req.body;
 	
 		try{
-			if(!param.h365ID){
+			if(!req.user.h365ID){
 				res.json({
 					code: Code.INVALID_H365ID
 				});	
@@ -120,7 +46,10 @@ function generateRouter(redisClient){
 				return;
 			}
 			
-			const result = await matchGuessControllerv2.betOnTeam(param);
+			const result = await matchGuessControllerv2.betOnTeam({
+				h365ID: req.user.h365ID,
+				...param,
+			});
 	
 			res.json({
 				code: 0,

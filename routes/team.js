@@ -5,7 +5,10 @@ var router = express.Router();
 var teamsController = new TeamsController();
 
 router.get('/', (req, res) => {
-
+	/* 
+		#swagger.tags = ['Team']
+		#swagger.description = '取得隊伍資訊'
+	*/
 	var filter = {};
 
 	if (req.query.id) filter = {_id: req.query.id};
@@ -16,27 +19,5 @@ router.get('/', (req, res) => {
 	});
 });
 
-
-router.delete('/', (req, res) => {
-	
-	var filter = {};
-
-	teamsController.deleteAll(filter, function(message){
-
-		res.json(message);
-
-	});
-
-});
-
-router.put('/', (req, res) => {
-
-	var teams = req.body;
-		
-	teamsController.update(teams, function(docs){
-	
-		res.json(docs);
-	});
-});
 
 module.exports = router;

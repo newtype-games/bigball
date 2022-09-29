@@ -5,11 +5,21 @@ const axios = require('axios').default;
 
 module.exports = app => {
     app.get('/auth/h365', function(req, res){
+        /* 
+            #swagger.tags = ['Auth']
+            #swagger.description = '第三方綁定跳轉專用API'
+        */        
         res.redirect((`${process.env.THIRD_PARTY_LOGIN_URL}?callback=${process.env.THIRD_PARTY_LOGIN_CALLBACK_URL}&merchantId=${process.env.MERCHANT_ID}&serviceId=${process.env.SERVICE_ID}`));
     });
 
     app.get('/auth/h365/callback', async function(req, res){
+        /* 
+            #swagger.tags = ['Auth']
+            #swagger.description = '第三方綁定callback API'
+        */  
         const { token } = req.query;
+        console.log(`token: ${token}`);
+
         try{
             const response = await axios.get(`${process.env.H365_API_URL}/user/get-user-info?merchantId=${process.env.MERCHANT_ID}&serviceId=${process.env.SERVICE_ID}`,{
                 headers: {
@@ -26,6 +36,7 @@ module.exports = app => {
             }
 
             const { userSn, uuid } = response.data.data;
+
 
             let user = await User.findOne({
                 h365ID: uuid,
@@ -68,25 +79,21 @@ module.exports = app => {
         }
     });
 
-    app.get('/auth/google', passport.authenticate('google', {
-        scope: ['profile','email'],
-        prompt: 'select_account'
-    }));
-
-    app.get('/auth/google/callback', 
-        passport.authenticate('google'), 
-    (req,res) => {
-        res.redirect('/ranking');
-    });
-
     app.get('/api/logout', (req, res) => {
+        /* 
+            #swagger.tags = ['Auth']
+        */        
+        res.red
         req.logout();
         req.session = null;
         res.redirect('/');
-        //res.redirect('https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:3000/');
     });
 
     app.get('/api/current_user', (req, res) => {
+        /* 
+            #swagger.tags = ['Auth']
+        */        
+        res.red
         res.send(req.user);
     })
 }

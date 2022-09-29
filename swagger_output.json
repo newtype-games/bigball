@@ -1,0 +1,749 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "REST API",
+    "description": ""
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/auth/h365": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "第三方綁定跳轉專用API",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/auth/h365/callback": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "第三方綁定callback API",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/logout": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/api/current_user": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/team/": {
+      "get": {
+        "tags": [
+          "Team"
+        ],
+        "description": "取得隊伍資訊",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/teamManagement/": {
+      "delete": {
+        "tags": [
+          "TeamManagement"
+        ],
+        "description": "刪除隊伍資訊",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "TeamManagement"
+        ],
+        "description": "更新隊伍資訊",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/worldCup/clear": {
+      "post": {
+        "tags": [
+          "WorldCup"
+        ],
+        "description": "清除所有賽事資料",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/worldCup/seed": {
+      "post": {
+        "tags": [
+          "WorldCup"
+        ],
+        "description": "注入賽事資料",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/guess/": {
+      "get": {
+        "tags": [
+          "Guess"
+        ],
+        "description": "取得使用者預測結果",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/guessManagement/": {
+      "delete": {
+        "tags": [
+          "Guess"
+        ],
+        "description": "刪除預測",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Guess"
+        ],
+        "description": "更新預測",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Guess"
+        ],
+        "description": "建立預測",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/match/": {
+      "get": {
+        "tags": [
+          "Match"
+        ],
+        "description": "取得比賽資料",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "homeTeam",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "visitorTeam",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/matchManagement/": {
+      "get": {
+        "tags": [
+          "Match"
+        ],
+        "description": "取得比賽資料",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "homeTeam",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "visitorTeam",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/stage/": {
+      "get": {
+        "tags": [
+          "Stage"
+        ],
+        "description": "取得比賽階段資料",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/stage/situation": {
+      "get": {
+        "tags": [
+          "Stage"
+        ],
+        "description": "取得下注狀態列舉",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/stage/status": {
+      "get": {
+        "tags": [
+          "Stage"
+        ],
+        "description": "取得階段狀態",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/stageManagement/{id}": {
+      "delete": {
+        "tags": [
+          "Stage"
+        ],
+        "description": "刪除階段",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/stageManagement/": {
+      "put": {
+        "tags": [
+          "Stage"
+        ],
+        "description": "更新階段",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/user/self": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "查詢使用者自身資訊",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/user/{h365ID}/onComsumedHCoins": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "HCoin消耗callback",
+        "parameters": [
+          {
+            "name": "h365ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "key",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "consumedHCoins": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/userManagement/": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "查詢使用者資訊",
+        "parameters": [
+          {
+            "name": "googleID",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "isPaid",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/userManagement/{id}": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "description": "更新使用者資訊",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "isAdmin": {
+                  "example": "any"
+                },
+                "isPaid": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/matchGuess/betOnTeam": {
+      "post": {
+        "tags": [
+          "MatchGuess"
+        ],
+        "description": "對隊伍下注",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "any"
+                },
+                "team": {
+                  "example": "any"
+                },
+                "count": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/matchGuessManagement/([a-f0-9]{24})/": {
+      "get": {
+        "tags": [
+          "MatchGuess"
+        ],
+        "description": "查詢比賽猜測資料",
+        "parameters": [
+          {
+            "name": "24",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/matchGuessManagement/": {
+      "delete": {
+        "tags": [
+          "MatchGuess"
+        ],
+        "description": "刪除比賽猜測資料",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "MatchGuess"
+        ],
+        "description": "更新比賽猜測資料",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "MatchGuess"
+        ],
+        "description": "建立比賽猜測資料",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/stageGuess/": {
+      "get": {
+        "tags": [
+          "StageGuess"
+        ],
+        "description": "查詢比賽階段猜測資料",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/stageGuessManagement/": {
+      "delete": {
+        "tags": [
+          "StageGuess"
+        ],
+        "description": "刪除比賽階段猜測資料",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "StageGuess"
+        ],
+        "description": "更新比賽階段猜測資料",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "StageGuess"
+        ],
+        "description": "建立新比賽階段猜測資料",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/balanceStatistic/": {
+      "get": {
+        "tags": [
+          "BalanceStatistic"
+        ],
+        "description": "取得累積獎池資訊",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  }
+}

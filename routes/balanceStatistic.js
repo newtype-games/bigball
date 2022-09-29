@@ -8,7 +8,10 @@ const Code =  require('./responseCode');
 function generateRouter(redisClient){
 	const balanceStatisticController = new BalanceStatisticController(redisClient);
 	router.get('/', async (req, res) => {
-		
+		/* 
+			#swagger.tags = ['BalanceStatistic']
+			#swagger.description = '取得累積獎池資訊'
+		*/
 		try {
 			const filter = {id: req.query.id};
 			result = await balanceStatisticController.get(filter)

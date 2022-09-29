@@ -6,12 +6,13 @@ var guessController = new GuessController();
 
 
 router.get('/', (req, res) => {
-
-	var id = req.query.id;
+	/* 
+		#swagger.tags = ['Guess']
+		#swagger.description = '取得使用者預測結果'
+	*/
 	var user = req.query.user;
 
 	var filter = {};
-	if(id) filter._id = id;
 	if(user) filter.user = user;
 
 	//usuario logado
@@ -20,50 +21,6 @@ router.get('/', (req, res) => {
 
 	guessController.get(filter, loggedUser, function(docs){
 		
-		res.json(docs);
-	});
-});
-
-router.get(/([a-f0-9]{24})/, (req, res) => {
-
-	var filter = {_id: req.params[0]};
-
-	guessController.get(filter, function(docs){
-		
-		res.json(docs[0]);
-	});
-});
-
-router.delete('/', (req, res) => {
-	
-	guessController.delete({}, function(message){
-
-		res.json(message);
-
-	});
-
-});
-
-router.put('/', (req, res) => {
-
-	var guess = req.body;
-	
-	if (!guess._id) {res.json('ID nao encontrado');}
-	else {
-		
-		guessController.save(guess, function(docs){
-	
-			res.json(docs);
-		});
-	}
-});
-
-router.post('/', (req, res) => {
-
-	var guess = req.body;
-		
-	guessController.save(guess, function(docs){
-	
 		res.json(docs);
 	});
 });

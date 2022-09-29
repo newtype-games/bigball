@@ -5,61 +5,14 @@ var router = express.Router();
 var stageGuessController = new StageGuessController();
 
 router.get('/', (req, res) => {
-
+	/* 
+		#swagger.tags = ['StageGuess']
+		#swagger.description = '查詢比賽階段猜測資料'
+	*/
 	var filter = {};
 
 	stageGuessController.get(filter, function(docs){
 		
-		res.json(docs);
-	});
-});
-
-
-router.delete('/', (req, res) => {
-	
-	var filter = {};
-
-	stageGuessController.delete(filter, function(message){
-
-		res.json(message);
-
-	});
-
-});
-
-router.put(/([a-f0-9]{24})/, (req, res) => {
-
-	var stageGuess = req.body;
-
-	if (!stageGuess._id) {res.json('ID nao encontrado.');}
-
-	else if (stageGuess._id != req.params[0]) {res.json('ID do form diferente do ID da URL.');}
-
-	else {
-		
-		stageGuessController.save(stageGuess, function(docs){
-	
-			res.json(docs[0]);
-		});
-	}
-});
-
-router.put('/', (req, res) => {
-
-	var stageGuess = req.body;
-	
-	stageGuessController.save(stageGuess, function(docs){
-
-		res.json(docs);
-	});
-});
-
-router.post('/', (req, res) => {
-
-	var stageGuess = req.body;
-		
-	stageGuessController.save(stageGuess, function(docs){
-	
 		res.json(docs);
 	});
 });

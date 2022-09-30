@@ -2,7 +2,7 @@ var MatchGuess = require('../models/MatchGuess');
 var User = require('../models/User');
 var Code = require('./errorCode');
 var ModelCode = require('../models/errorCode');
-var BalanceStatistic = require('../models/balanceStatistic');
+var BalanceStatistic = require('../models/BalanceStatistic');
 var Stage = require('../models/Stage');
 
 module.exports = function(redisClient){

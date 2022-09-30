@@ -1,6 +1,6 @@
 const Stage = require('../models/Stage');
 const Code = require('./errorCode');
-const BalanceStatistic = require('../models/balanceStatistic');
+const BalanceStatistic = require('../models/BalanceStatistic');
 
 module.exports = function(redisClient){
     this.get = async function(param){

@@ -2,10 +2,8 @@ var MatchGuess = require('../models/MatchGuess');
 var User = require('../models/User');
 var Code = require('./errorCode');
 var ModelCode = require('../models/errorCode');
-var BalanceStatistic = require('../models/BalanceStatistic');
-var Stage = require('../models/Stage');
 
-module.exports = function(redisClient){
+module.exports = function(redisClient, pubSubToplic){
     this.betOnTeam = async function(param){
 
 		let user = await User.findOne({
@@ -39,19 +37,13 @@ module.exports = function(redisClient){
 				});
 			}
 
-			const stages = await Stage.find({
-				matches: {
-					$elemMatch: {
-						$eq: betResult.toObject().relatedMatch
-					}
-				}
-			});
-
-			const updatedBalanceStatistic = await BalanceStatistic.onUserBet(stages[0]._id, {
-				coinCount: param.count,
-			});
-			
-			redisClient.set(`balanceStatistic:${updatedBalanceStatistic.id}`, JSON.stringify(updatedBalanceStatistic));
+			pubSubToplic.publish(Buffer.from(
+				JSON.stringify({
+					event: 0,
+					param: param,
+					betResult: betResult,
+				})
+			));
 
 			return betResult;
 		}catch(e){

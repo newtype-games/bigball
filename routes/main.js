@@ -17,7 +17,7 @@ var requireLogin = require('../middlewares/requireLogin');
 var requireAdminRole = require('../middlewares/requireAdminRole');
 var balanceStatistic = require('./balanceStatistic');
 
-module.exports = function(app, redisClient) {
+module.exports = function(app, redisClient, topic, subscription) {
 
 	// should require login?
 	app.use('/api/team', teamRoutes);
@@ -37,10 +37,10 @@ module.exports = function(app, redisClient) {
 	app.use('/api/stage', stageRoutes);
 	app.use('/api/stageManagement', requireAdminRole, stageManagement);
 
-	app.use('/api/user', userRoutes(redisClient));
+	app.use('/api/user', userRoutes(redisClient, topic));
 	app.use('/api/userManagement', requireAdminRole, userManagementRoutes(redisClient));
 
-	app.use('/api/matchGuess', matchGuessRoutes(redisClient));
+	app.use('/api/matchGuess', matchGuessRoutes(redisClient, topic));
 	app.use('/api/matchGuessManagement', requireAdminRole, matchGuessManagementRoutes(redisClient));
 
 	app.use('/api/stageGuess', stageGuessRoutes);

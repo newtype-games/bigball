@@ -5,8 +5,8 @@ var router = express.Router();
 
 var Code =  require('./responseCode');
 
-function generateRouter(redisClient){
-	var matchGuessControllerv2 = new MatchGuessV2Controller(redisClient);
+function generateRouter(redisClient, pubSubToplic){
+	var matchGuessControllerv2 = new MatchGuessV2Controller(redisClient, pubSubToplic);
 
 	router.post('/betOnTeam', async (req, res) => {
 		/* 

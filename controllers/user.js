@@ -1,7 +1,7 @@
 var MatchGuess = require('../models/MatchGuess');
 var User = require('../models/User');
 
-module.exports = function(redisClient){
+module.exports = function(redisClient, pubSubTopic){
 
 	this.getById = function(id, callback){
 
@@ -34,24 +34,13 @@ module.exports = function(redisClient){
 		});
 	};
 
-	this.onConsumedHCoins = async function(h365ID, payload){
-		let user = await User.findOne({
-			h365ID: h365ID,
-		});
-
-		if(!user){
-			user = await new User({
-				googleID:"",
-				h365ID: h365ID,
-				name: h365ID,
-				email: "",
-				urlImg: '',
-				password: '',
-			}).save();
-		}
-
-		
-		const result = await User.onConsumedHCoins(h365ID, payload);
-		return result;
+	this.onConsumedHCoins = function(h365ID, payload){
+		pubSubTopic.publish(Buffer.from(
+			JSON.stringify({
+				event: 1,
+				h365ID,
+				payload
+			}),
+		));
 	}
 };

@@ -1,4 +1,4 @@
-FROM node:9.5.0-alpine AS nodeModuleBuilder
+FROM node:16.13.0-alpine AS nodeModuleBuilder
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ COPY ./package-lock.json ./
 
 RUN npm install --only=production
 
-FROM node:9.5.0-alpine  AS runtime
+FROM node:16.13.0-alpine  AS runtime
 
 WORKDIR /app
 

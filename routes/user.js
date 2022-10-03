@@ -4,8 +4,8 @@ var Code = require('./responseCode');
 
 var router = express.Router();
 
-function generateRouter(redisClient){
-	var userController = new UserController(redisClient);
+function generateRouter(redisClient, pubSubTopic){
+	var userController = new UserController(redisClient, pubSubTopic);
 	router.get('/self', (req, res) => {
 		/* 
 			#swagger.tags = ['Users']
@@ -42,16 +42,13 @@ function generateRouter(redisClient){
 			return;
 		}
 	
-		const result = await userController.onConsumedHCoins(h365ID, {
+		userController.onConsumedHCoins(h365ID, {
 			consumedHCoins: payload.consumedHCoins,
-		})
+		});
 		
 		res.json({
 			code: 0,
-			balance: result.balance,
-			totalConsumedHCoin: result.totalConsumedHCoin,
-			remainHCoin: result.remainHCoin,
-		})
+		});
 	});
 
 	return router;

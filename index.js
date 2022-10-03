@@ -56,7 +56,10 @@ console.log('pubsub ready');
 
     app.use(passport.initialize());
     app.use(passport.session());
-    app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+    if(process.env.SWAGGER_ENABLED == 'true'){
+        app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+    }
+
 
     require('./routes/authRoutes')(app);
     require('./routes/main')(app, redisClient, topic, subscription);

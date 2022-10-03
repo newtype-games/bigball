@@ -2,7 +2,7 @@ const Stage = require('./models/Stage');
 const BalanceStatistic = require('./models/BalanceStatistic');
 const User = require('./models/User');
 
-function mountHandler(handler){
+function mountHandler(handler, redisClient){
       //mount pub sub handler:
       handler[0] = async function(data) {
         const { param, betResult } = data

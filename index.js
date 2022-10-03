@@ -33,7 +33,7 @@ console.log('pubsub ready');
     console.log('google pubsub initialized');
   
     if(process.env.PUB_SUB_HANDLE_ENABLED == 'true'){
-        mountHandler(handler);
+        mountHandler(handler, redisClient);
         console.log('mount pub sub message handler');
     }
   

@@ -7,6 +7,7 @@ var guessRoutes = require('./guess');
 var guessManagementRoutes = require('./guessManagement');
 var stageRoutes = require('./stage');
 var stageManagement = require('./stageManagement');
+var matchManagement = require('./matchManagement');
 var userRoutes = require('./user');
 var userManagementRoutes = require('./userManagement');
 var matchGuessRoutes = require('./matchGuess');
@@ -31,7 +32,7 @@ module.exports = function(app, redisClient, topic, subscription) {
 	app.use('/api/guessManagement', requireAdminRole, guessManagementRoutes);
 
 	app.use('/api/match', matchRoutes);
-	app.use('/api/matchManagement', requireAdminRole,matchRoutes);
+	app.use('/api/matchManagement', requireAdminRole,matchManagement);
 	// app.use('/api/account', accountRoutes);
 
 	app.use('/api/stage', stageRoutes);

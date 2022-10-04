@@ -13,28 +13,33 @@ async function initPubsub(
         const pubsub = new PubSub({projectId});
         const topic = await getTopic(pubsub, `projects/${projectId}/topics/${topicNameOrId}`);
         console.log(`Topic ${topicNameOrId} ready.`);
-        const subscription = await getSubscription(topic, `projects/${projectId}/subscriptions/${subscriptionName}`);
-        console.log(`subscription ${subscriptionName} ready.`);
+        let subscription;
 
-        // // // Receive callbacks for new messages on the subscription
-        subscription.on('message', message => {
-            console.log(`Received message ${message.id}:`);
-            console.log(`\tData: ${message.data}`);
-            console.log(`\tAttributes: ${JSON.stringify(message.attributes)}`);
-            const data = JSON.parse(message.data);
-            if(handler[data.event]){
-                handler[data.event](data);
-            }else{
-                console.error(`event ${data.event} not found`)
-            }
-            
-            message.ack();
-        });
+        if(process.env.PUB_SUB_HANDLE_ENABLED == 'true'){
+            subscription = await getSubscription(topic, `projects/${projectId}/subscriptions/${subscriptionName}`);
+            console.log(`subscription ${subscriptionName} ready.`);
 
-        // // Receive callbacks for errors on the subscription
-        subscription.on('error', error => {
-            console.error('Received error:', error);
-        });
+             // Receive callbacks for new messages on the subscription
+            subscription.on('message', message => {
+                console.log(`Received message ${message.id}:`);
+                console.log(`\tData: ${message.data}`);
+                console.log(`\tAttributes: ${JSON.stringify(message.attributes)}`);
+                const data = JSON.parse(message.data);
+                if(handler[data.event]){
+                    handler[data.event](data);
+                }else{
+                    console.error(`event ${data.event} not found`)
+                }
+                
+                message.ack();
+            });
+
+            // Receive callbacks for errors on the subscription
+            subscription.on('error', error => {
+                console.error('Received error:', error);
+            });
+        }
+       
         
         return {
             topic,

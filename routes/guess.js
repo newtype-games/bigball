@@ -8,7 +8,14 @@ var guessController = new GuessController();
 router.get('/', (req, res) => {
 	/* 
 		#swagger.tags = ['Guess']
-		#swagger.description = '取得使用者預測結果'
+		#swagger.description = '取得使用者預測資訊'
+
+	*/
+	/*
+		#swagger.responses[200] = { 
+			schema: { "$ref": "#/definitions/Guess" },
+			description: "取得預測資訊" 
+		} 
 	*/
 	var user = req.user
 	if(!user){
@@ -21,7 +28,6 @@ router.get('/', (req, res) => {
 	var loggedUser = req.user._id;
 
 	guessController.get(filter, loggedUser, function(docs){
-	
 		res.json(docs);
 	});
 });

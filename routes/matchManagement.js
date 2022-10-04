@@ -6,7 +6,7 @@ var matchController = new MatchController();
 
 router.delete('/', (req, res) => {
 	/* 
-		#swagger.tags = ['Match']
+		#swagger.tags = ['MatchManagement']
 		#swagger.description = '刪除比賽資料'
 	*/
 	matchController.delete({}, function(message){
@@ -19,7 +19,7 @@ router.delete('/', (req, res) => {
 
 router.put('/', (req, res) => {
 	/* 
-		#swagger.tags = ['Match']
+		#swagger.tags = ['MatchManagement']
         #swagger.description = '更新比賽資料'
     */
 	var matches = req.body;

@@ -5,7 +5,7 @@
     "title": "REST API",
     "description": ""
   },
-  "host": "192.168.28.123:5000",
+  "host": "localhost:5000",
   "basePath": "/",
   "schemes": [
     "http"
@@ -16,7 +16,7 @@
         "tags": [
           "Auth"
         ],
-        "description": "第三方綁定跳轉專用API",
+        "description": "第三方綁定跳轉專用API, 請不要直接呼叫, 將網址複製並用瀏覽器開啟",
         "parameters": [],
         "responses": {}
       }
@@ -26,7 +26,7 @@
         "tags": [
           "Auth"
         ],
-        "description": "第三方綁定callback API",
+        "description": "第三方綁定callback API, 請不要呼叫",
         "parameters": [
           {
             "name": "token",
@@ -46,9 +46,13 @@
         "tags": [
           "Auth"
         ],
-        "description": "",
+        "description": "登出帳號, 將抹除session",
         "parameters": [],
-        "responses": {}
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
       }
     },
     "/api/current_user": {
@@ -56,11 +60,17 @@
         "tags": [
           "Auth"
         ],
-        "description": "",
+        "description": "取得玩家自身帳號資訊",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "成功取得玩家自身資訊",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -80,7 +90,10 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "成功取得隊伍資訊",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
           }
         }
       }
@@ -156,6 +169,26 @@
         "tags": [
           "Guess"
         ],
+        "description": "取得使用者預測資訊",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "取得預測資訊",
+            "schema": {
+              "$ref": "#/definitions/Guess"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/guessManagement/": {
+      "get": {
+        "tags": [
+          "GuessManagement"
+        ],
         "description": "取得使用者預測結果",
         "parameters": [
           {
@@ -172,12 +205,10 @@
             "description": "Unauthorized"
           }
         }
-      }
-    },
-    "/api/guessManagement/": {
+      },
       "delete": {
         "tags": [
-          "Guess"
+          "GuessManagement"
         ],
         "description": "刪除預測",
         "parameters": [],
@@ -192,7 +223,7 @@
       },
       "put": {
         "tags": [
-          "Guess"
+          "GuessManagement"
         ],
         "description": "更新預測",
         "parameters": [
@@ -220,7 +251,7 @@
       },
       "post": {
         "tags": [
-          "Guess"
+          "GuessManagement"
         ],
         "description": "建立預測",
         "parameters": [],
@@ -239,7 +270,7 @@
         "tags": [
           "Match"
         ],
-        "description": "取得比賽資料",
+        "description": "取得賽事資訊",
         "parameters": [
           {
             "name": "id",
@@ -259,7 +290,10 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "成功取得賽事資訊",
+            "schema": {
+              "$ref": "#/definitions/Match"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -268,28 +302,27 @@
       }
     },
     "/api/matchManagement/": {
-      "get": {
+      "delete": {
         "tags": [
-          "Match"
+          "MatchManagement"
         ],
-        "description": "取得比賽資料",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "type": "string"
+        "description": "刪除比賽資料",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
-          {
-            "name": "homeTeam",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "visitorTeam",
-            "in": "query",
-            "type": "string"
+          "401": {
+            "description": "Unauthorized"
           }
+        }
+      },
+      "put": {
+        "tags": [
+          "MatchManagement"
         ],
+        "description": "更新比賽資料",
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
@@ -741,6 +774,205 @@
           },
           "401": {
             "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "6333b0cd0319f75d3c170282"
+        },
+        "h365ID": {
+          "type": "string",
+          "example": "06f3ca92-19a6-4ecf-a518-6e94f9e9e711"
+        },
+        "registerDate": {
+          "type": "string",
+          "example": "2022-09-28T02:26:21.301Z"
+        }
+      }
+    },
+    "Team": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "br"
+          },
+          "name": {
+            "type": "string",
+            "example": "Brasil"
+          },
+          "gc": {
+            "type": "number",
+            "example": -6
+          },
+          "gp": {
+            "type": "number",
+            "example": 7
+          }
+        }
+      }
+    },
+    "Guess": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "6333b0cd0319f75d3c170285"
+          },
+          "globalGuess": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "6333b0cd0319f75d3c170286"
+              },
+              "firstPlace": {},
+              "pointsChampions": {
+                "type": "number",
+                "example": 0
+              },
+              "pointsTeamGC": {
+                "type": "number",
+                "example": 0
+              },
+              "pointsTeamGP": {
+                "type": "number",
+                "example": 0
+              },
+              "pointsTopScorer": {
+                "type": "number",
+                "example": 0
+              },
+              "relatedStage": {
+                "type": "string",
+                "example": "groupStage"
+              },
+              "secondPlace": {},
+              "teamGC": {},
+              "teamGP": {},
+              "thirdPlace": {},
+              "topScorer": {},
+              "status": {
+                "type": "string",
+                "example": "completed"
+              },
+              "deadline": {
+                "type": "string",
+                "example": "2022-09-17 00:00:00"
+              },
+              "situation": {
+                "type": "string",
+                "example": "Fase finalizada"
+              }
+            }
+          },
+          "position": {
+            "type": "number",
+            "example": 1
+          },
+          "stageGuesses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "6333b0cd0319f75d3c17028b"
+                },
+                "relatedStage": {
+                  "type": "string",
+                  "example": "finals"
+                },
+                "label": {
+                  "type": "string",
+                  "example": "Finais"
+                },
+                "situation": {
+                  "type": "string",
+                  "example": "Fase não iniciada"
+                },
+                "order": {
+                  "type": "number",
+                  "example": 5
+                },
+                "status": {
+                  "type": "string",
+                  "example": "closed"
+                },
+                "deadline": {
+                  "type": "string",
+                  "example": "2022-09-17 00:00:00"
+                }
+              }
+            }
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "6333b0cd0319f75d3c170282"
+              },
+              "h365ID": {
+                "type": "string",
+                "example": "06f3ca92-19a6-4ecf-a518-6e94f9e9e711"
+              },
+              "registerDate": {
+                "type": "string",
+                "example": "2022-09-28T02:26:21.301Z"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Match": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "number",
+            "example": 2
+          },
+          "date": {
+            "type": "string",
+            "example": "2022-09-20T00:00:00.000Z"
+          },
+          "group": {
+            "type": "string",
+            "example": "A"
+          },
+          "homeTeam": {
+            "type": "string",
+            "example": "eg"
+          },
+          "visitorTeam": {
+            "type": "string",
+            "example": "uy"
+          },
+          "homeScore": {
+            "type": "number",
+            "example": 1
+          },
+          "visitorScore": {
+            "type": "number",
+            "example": 2
+          },
+          "winner": {
+            "type": "string",
+            "example": "uy"
           }
         }
       }

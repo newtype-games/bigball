@@ -7,7 +7,7 @@ module.exports = app => {
     app.get('/auth/h365', function(req, res){
         /* 
             #swagger.tags = ['Auth']
-            #swagger.description = '第三方綁定跳轉專用API'
+            #swagger.description = '第三方綁定跳轉專用API, 請不要直接呼叫, 將網址複製並用瀏覽器開啟'
         */        
         res.redirect((`${process.env.THIRD_PARTY_LOGIN_URL}?callback=${process.env.THIRD_PARTY_LOGIN_CALLBACK_URL}&merchantId=${process.env.MERCHANT_ID}&serviceId=${process.env.SERVICE_ID}`));
     });
@@ -15,7 +15,7 @@ module.exports = app => {
     app.get('/auth/h365/callback', async function(req, res){
         /* 
             #swagger.tags = ['Auth']
-            #swagger.description = '第三方綁定callback API'
+            #swagger.description = '第三方綁定callback API, 請不要呼叫'
         */  
         const { token } = req.query;
         console.log(`token: ${token}`);
@@ -82,7 +82,12 @@ module.exports = app => {
     app.get('/api/logout', (req, res) => {
         /* 
             #swagger.tags = ['Auth']
-        */        
+            #swagger.description = '登出帳號, 將抹除session'
+        */     
+        if(!req.user){
+            res.status(401).json({});
+            return;
+        }   
         res.red
         req.logout();
         req.session = null;
@@ -92,8 +97,26 @@ module.exports = app => {
     app.get('/api/current_user', (req, res) => {
         /* 
             #swagger.tags = ['Auth']
-        */        
+            #swagger.description = '取得玩家自身帳號資訊'
+        */
+        /* 
+            #swagger.responses[200] = { 
+                schema: { "$ref": "#/definitions/User" },
+                description: "成功取得玩家自身資訊" 
+            } 
+        */
+
+        if(!req.user){
+            res.status(401).json({});
+            return;
+        }
         res.red
-        res.send(req.user);
+        console.log(req.user)
+        const user = req.user;
+        res.json({
+            _id: user.id,
+            h365ID: user.h365ID,
+            registerDate: user.registerDate,
+        });
     })
 }

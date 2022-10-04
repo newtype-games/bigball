@@ -6,4 +6,5 @@ module.exports = {
     INVALID_BET_COUNT: -5,
     UNKNOWN_ERROR: -6,
     INVALID_H365ID: -7,    
+
 }

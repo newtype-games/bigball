@@ -32,7 +32,7 @@ function generateRouter(redisClient, pubSubTopic){
 		});
 	});
 
-	router.post('/:h365ID/onComsumedHCoins', async (req, res)=> {
+	router.post('/:h365ID/onComsumedHCoin', async (req, res)=> {
 		const h365ID = req.params.h365ID;
 		const payload = req.body;
 		/* 
@@ -47,16 +47,16 @@ function generateRouter(redisClient, pubSubTopic){
 			return;
 		}
 	
-		if(!payload.consumedHCoins || payload.consumedHCoins < 0){
+		if(!payload.consumedHCoin || payload.consumedHCoin < 0){
 			res.json({
 				code: CONSUMED_H_COINS_INVALID,
-				reason: "consumedHCoins invalid",
+				reason: "consumedHCoin invalid",
 			});
 			return;
 		}
 	
 		userController.onConsumedHCoins(h365ID, {
-			consumedHCoins: payload.consumedHCoins,
+			consumedHCoin: payload.consumedHCoin,
 		});
 		
 		res.json({

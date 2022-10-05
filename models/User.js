@@ -171,11 +171,11 @@ userSchema.static("onConsumedHCoins", async function(h365ID, payload){
 		h365ID: h365ID,
 	});
 
-	const remainHCoin = user.remainHCoin + payload.consumedHCoins;
+	const remainHCoin = user.remainHCoin + payload.consumedHCoin;
 	const updateObj = {
 		$inc: {
 			balance: Math.floor(remainHCoin / ratio),
-			totalConsumedHCoin: payload.consumedHCoins,
+			totalConsumedHCoin: payload.consumedHCoin,
 		},
 		$set:{
 			remainHCoin: remainHCoin % ratio

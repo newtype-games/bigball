@@ -23,7 +23,7 @@ function mountHandler(handler, redisClient){
     }
 
     handler[1] = async function(data) {
-        const { h365ID, consumedHCoins } = data;
+        const { h365ID, consumedHCoin } = data;
 		let user = await User.findOne({
 			h365ID: h365ID,
 		});
@@ -39,7 +39,7 @@ function mountHandler(handler, redisClient){
 			}).save();
 		}
 
-		const result = await User.onConsumedHCoins(h365ID, { consumedHCoins });
+		const result = await User.onConsumedHCoins(h365ID, { consumedHCoin });
     }
 }
 

@@ -39,7 +39,7 @@ module.exports = function(redisClient, pubSubTopic){
 			JSON.stringify({
 				event: 1,
 				h365ID,
-				consumedHCoins: payload.consumedHCoins,
+				consumedHCoin: payload.consumedHCoin,
 			}),
 		));
 	}

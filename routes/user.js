@@ -9,13 +9,26 @@ function generateRouter(redisClient, pubSubTopic){
 	router.get('/self', (req, res) => {
 		/* 
 			#swagger.tags = ['Users']
-			#swagger.description = '查詢使用者自身資訊'
+			#swagger.description = '查詢使用者帳號資訊'
 		*/
-
+		/*
+		#swagger.responses[200] = { 
+			schema: { "$ref": "#/definitions/User" },
+			description: "成功查詢使用者帳號資訊" 
+		} 
+		*/		
 		if(!req.user){ res.json({ code: Code.INVALID_H365ID })}
 
-		userController.getById(req.user._id, function(docs){
-			res.json(docs);
+		userController.getById(req.user._id, function(doc){
+			res.json({
+				_id: doc._id,
+				balance: doc.balance,
+				remainHCoin: doc.remainHCoin,
+				totalConsumedHCoin: doc.totalConsumedHCoin,
+				h365ID: doc.h365ID,
+				name: doc.name,
+				registerDate: doc.registerDate,
+			});
 		});
 	});
 

@@ -97,12 +97,12 @@ module.exports = app => {
     app.get('/api/current_user', (req, res) => {
         /* 
             #swagger.tags = ['Auth']
-            #swagger.description = '取得玩家自身帳號資訊'
+            #swagger.description = '取得使用者授權資訊'
         */
         /* 
             #swagger.responses[200] = { 
-                schema: { "$ref": "#/definitions/User" },
-                description: "成功取得玩家自身資訊" 
+                schema: { "$ref": "#/definitions/AuthInfo" },
+                description: "成功取得使用者授權資訊" 
             } 
         */
 

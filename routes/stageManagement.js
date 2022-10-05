@@ -7,7 +7,7 @@ var stageController = new StageController();
 
 router.delete('/:id', (req, res) => {
 	/* 
-		#swagger.tags = ['Stage']
+		#swagger.tags = ['StageManagement']
         #swagger.description = '刪除階段'
 	*/
 	var id = req.params.id;
@@ -22,7 +22,7 @@ router.delete('/:id', (req, res) => {
 
 router.put('/', (req, res) => {
 	/* 
-		#swagger.tags = ['Stage']
+		#swagger.tags = ['StageManagement']
         #swagger.description = '更新階段'
 	*/
 

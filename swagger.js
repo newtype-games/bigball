@@ -8,7 +8,7 @@ const endpointsFiles = ['./index.js']; // 要指向的 API，通常使用 Expres
 const doc = {
     host: process.env.SWAGGER_TARGET_HOST || 'localhost:5000',
     definitions: {
-        User: {
+        AuthInfo: {
             "_id": "6333b0cd0319f75d3c170282",
             "h365ID": "06f3ca92-19a6-4ecf-a518-6e94f9e9e711",
             "registerDate": "2022-09-28T02:26:21.301Z"
@@ -198,7 +198,16 @@ const doc = {
               "visitorScore": 2,
               "winner": "uy"
             },
-        ]
+        ],
+        User:{
+            "_id": "6333b0cd0319f75d3c170282",
+            "balance": 980,
+            "remainHCoin": 0,
+            "totalConsumedHCoin": 1000000,
+            "h365ID": "06f3ca92-19a6-4ecf-a518-6e94f9e9e711",
+            "name": "06f3ca92-19a6-4ecf-a518-6e94f9e9e711",
+            "registerDate": "2022-09-28T02:26:21.301Z",
+        }
     }
 }
 

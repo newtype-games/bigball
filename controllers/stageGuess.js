@@ -5,7 +5,6 @@ var emptyStageGuesses = require('../misc/StageGuess.json');
 module.exports = function(){
 
 	this.get = function(filter, callback){
-		
 		StageGuess.find(filter, function(err, guesses){
 
 			if(err) callback(err);

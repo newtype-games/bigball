@@ -67,7 +67,6 @@ module.exports = app => {
                 console.log(user);
             }
             
-
             // https://big-ball-sandbox.h365.games/auth/h365?redirect=https://world-cup-f2e-sandbox.h365.games/123
             // http://localhost:5000/auth/h365?redirect_url=https://world-cup-f2e-sandbox.h365.games
             if(redirect_url){
@@ -85,22 +84,24 @@ module.exports = app => {
         }
     });
 
-    app.get('/api/logout', (req, res) => {
+    app.get('/api/logout',async (req, res) => {
         /* 
             #swagger.tags = ['Auth']
             #swagger.description = '登出帳號, 將抹除session'
         */     
-        if(!req.user){
-            res.status(401).json({});
-            return;
-        }   
-        res.red
-        req.logout();
-        req.session = null;
-        res.redirect('/');
+       if(!req.headers.token){
+        res.status(401).json({});
+        return;
+       }
+
+       console.log(uuid);
+       const user = await User.updateOne({h365ID: uuid},{ $set: { token: '' }}, {new: true}).exec();
+       console.log(user);
+
+       res.redirect('/');
     });
 
-    app.get('/api/current_user', (req, res) => {
+    app.get('/api/current_user', async (req, res) => {
         /* 
             #swagger.tags = ['Auth']
             #swagger.description = '取得使用者授權資訊'
@@ -112,13 +113,13 @@ module.exports = app => {
             } 
         */
 
-        if(!req.user){
+        if(!req.headers.token){
             res.status(401).json({});
             return;
         }
-        res.red
-        console.log(req.user)
-        const user = req.user;
+
+        const user = await User.findOne({ token: req.header.token }).exec();
+        
         res.json({
             _id: user.id,
             h365ID: user.h365ID,

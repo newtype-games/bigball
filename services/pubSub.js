@@ -14,11 +14,10 @@ async function initPubsub(
         const topic = await getTopic(pubsub, `projects/${projectId}/topics/${topicNameOrId}`);
         console.log(`Topic ${topicNameOrId} ready.`);
         let subscription;
+        subscription = await getSubscription(topic, `projects/${projectId}/subscriptions/${subscriptionName}`);
+        console.log(`subscription ${subscriptionName} ready.`);
 
         if(process.env.PUB_SUB_HANDLE_ENABLED == 'true'){
-            subscription = await getSubscription(topic, `projects/${projectId}/subscriptions/${subscriptionName}`);
-            console.log(`subscription ${subscriptionName} ready.`);
-
              // Receive callbacks for new messages on the subscription
             subscription.on('message', message => {
                 console.log(`Received message ${message.id}:`);
@@ -40,7 +39,6 @@ async function initPubsub(
             });
         }
        
-        
         return {
             topic,
             subscription,

@@ -9,6 +9,13 @@ module.exports = app => {
             #swagger.tags = ['Auth']
             #swagger.description = '第三方綁定跳轉專用API, 請不要直接呼叫, 將網址複製並用瀏覽器開啟'
         */        
+
+        const { redirect_url } = req.query;
+        console.log(`redirect_url: ${redirect_url}`);
+        if(redirect_url){
+            res.redirect((`${process.env.THIRD_PARTY_LOGIN_URL}?callback=${process.env.THIRD_PARTY_LOGIN_CALLBACK_URL}${encodeURIComponent(`?redirect_url=${redirect_url}`)}&merchantId=${process.env.MERCHANT_ID}&serviceId=${process.env.SERVICE_ID}`));
+            return;
+        }
         res.redirect((`${process.env.THIRD_PARTY_LOGIN_URL}?callback=${process.env.THIRD_PARTY_LOGIN_CALLBACK_URL}&merchantId=${process.env.MERCHANT_ID}&serviceId=${process.env.SERVICE_ID}`));
     });
 
@@ -17,8 +24,8 @@ module.exports = app => {
             #swagger.tags = ['Auth']
             #swagger.description = '第三方綁定callback API, 請不要呼叫'
         */  
-        const { token } = req.query;
-        console.log(`token: ${token}`);
+        const { token, redirect_url } = req.query;
+        console.log(`token: ${token}, redirect_url: ${redirect_url}`);
 
         try{
             const response = await axios.get(`${process.env.H365_API_URL}/user/get-user-info?merchantId=${process.env.MERCHANT_ID}&serviceId=${process.env.SERVICE_ID}`,{
@@ -51,24 +58,23 @@ module.exports = app => {
                     email: "",
                     urlImg: '',
                     password: '',
+                    token: token,
                 }).save();
+                console.log(user);
+            }else{
+                console.log(uuid);
+                const user = await User.updateOne({h365ID: uuid},{ $set: { token: token }}, {new: true}).exec();
+                console.log(user);
             }
             
-            const p = new Promise((resolve, reject)=> {
-                req.logIn(user, (err)=> {
-                    if (err) { 
-                        console.error(err) 
-                        reject(err);
-                    }
-                    resolve();
-                });
-            });
-            await p;
-            if(process.env.THIRD_PARTY_LOGIN_REDIRECT_URL){
-                res.redirect(process.env.THIRD_PARTY_LOGIN_REDIRECT_URL);
+
+            // https://big-ball-sandbox.h365.games/auth/h365?redirect=https://world-cup-f2e-sandbox.h365.games/123
+            // http://localhost:5000/auth/h365?redirect_url=https://world-cup-f2e-sandbox.h365.games
+            if(redirect_url){
+                res.redirect(`${redirect_url}?token=${token}`);
                 return;
             }
-            res.json({ message: "ok"});
+            res.redirect(process.env.THIRD_PARTY_LOGIN_REDIRECT_URL);
         }catch(e){
             if(typeof(e) == 'string'){
                 res.json({message: e});

@@ -8,7 +8,8 @@
   "host": "localhost:5000",
   "basePath": "/",
   "schemes": [
-    "http"
+    "http",
+    "https"
   ],
   "paths": {
     "/auth/h365": {
@@ -17,7 +18,13 @@
           "Auth"
         ],
         "description": "第三方綁定跳轉專用API, 請不要直接呼叫, 將網址複製並用瀏覽器開啟",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "redirect_url",
+            "in": "query",
+            "type": "string"
+          }
+        ],
         "responses": {}
       }
     },
@@ -30,6 +37,11 @@
         "parameters": [
           {
             "name": "token",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "redirect_url",
             "in": "query",
             "type": "string"
           }
@@ -138,7 +150,13 @@
           "Guess"
         ],
         "description": "取得使用者預測資訊",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "取得預測資訊",
@@ -159,6 +177,11 @@
         ],
         "description": "取得賽事資訊",
         "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "id",
             "in": "query",
@@ -196,6 +219,11 @@
         "description": "取得比賽階段資料",
         "parameters": [
           {
+            "name": "token",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "id",
             "in": "query",
             "type": "string"
@@ -217,7 +245,13 @@
           "Stage"
         ],
         "description": "取得下注狀態列舉",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -234,7 +268,13 @@
           "Stage"
         ],
         "description": "取得階段狀態",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -251,7 +291,13 @@
           "Users"
         ],
         "description": "查詢使用者帳號資訊",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "成功查詢使用者帳號資訊",
@@ -265,7 +311,7 @@
         }
       }
     },
-    "/api/user/{h365ID}/onComsumedHCoins": {
+    "/api/user/{h365ID}/onComsumedHCoin": {
       "post": {
         "tags": [
           "Users"
@@ -279,6 +325,11 @@
             "type": "string"
           },
           {
+            "name": "token",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "key",
             "in": "header",
             "type": "string"
@@ -289,7 +340,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "consumedHCoins": {
+                "consumedHCoin": {
                   "example": "any"
                 }
               }
@@ -313,6 +364,11 @@
         ],
         "description": "對隊伍下注",
         "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -349,6 +405,11 @@
         ],
         "description": "取得累積獎池資訊",
         "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "id",
             "in": "query",

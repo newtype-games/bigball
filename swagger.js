@@ -7,6 +7,8 @@ const endpointsFiles = ['./index.js']; // 要指向的 API，通常使用 Expres
 
 const doc = {
     host: process.env.SWAGGER_TARGET_HOST || 'localhost:5000',
+    schemes: ['http', 'https'],
+    // security: [ { bearerAuth: [] } ],
     definitions: {
         AuthInfo: {
             "_id": "6333b0cd0319f75d3c170282",

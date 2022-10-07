@@ -33,6 +33,7 @@ const userSchema = new Schema({
 	balance: { type: Number, default: 0 }, 
 	remainHCoin: { type: Number, default: 0},
 	totalConsumedHCoin: { type: Number, default: 0},
+	token: {type: String, default: ''},
 }, { versionKey: false });
 
 autoIncrement.initialize(mongoose.connection);

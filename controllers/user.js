@@ -35,6 +35,7 @@ module.exports = function(redisClient, pubSubTopic){
 	};
 
 	this.onConsumedHCoins = function(h365ID, payload){
+		console.log(h365ID, payload);
 		pubSubTopic.publish(Buffer.from(
 			JSON.stringify({
 				event: 1,

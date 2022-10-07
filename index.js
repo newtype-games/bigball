@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+var cors = require('cors');
 
 const passport = require("passport");
 const BodyParser = require("body-parser");
@@ -38,7 +39,11 @@ console.log('pubsub ready');
     }
   
     const app = express();
-
+    var corsOptions = {
+        origin: '*',
+        optionsSuccessStatus: 200 
+    }
+    app.use(cors(corsOptions));
     app.use(BodyParser.json());
     app.use(BodyParser.urlencoded({ extended: false }));
 
